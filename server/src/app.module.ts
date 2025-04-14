@@ -1,22 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './features/user/user.module';
+import { DatabaseModule } from './infrastructure/database/database.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'root',
-      password: 'root',
-      database: 'mychatgptemini',
-      entities: [],
-      synchronize: true,
-    }),
-  ],
   controllers: [AppController],
   providers: [AppService],
+  imports: [UserModule, DatabaseModule],
 })
 export class AppModule {}
