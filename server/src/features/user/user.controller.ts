@@ -10,28 +10,35 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FindUserByIdDto } from './dto/find-user-by-id.dto';
+import { FindUserByEmailDto } from './dto/find-user-by-email.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  create(@Body() user: CreateUserDto) {
+    return this.userService.create(user);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  findById(@Param() id: FindUserByIdDto) {
+    return this.userService.findById(id);
+  }
+
+  @Get('email/.:email')
+  findByEmail(@Param() email: FindUserByEmailDto) {
+    return this.userService.findByEmail(email);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  update(@Param() id: FindUserByIdDto, @Body() user: UpdateUserDto) {
+    return this.userService.update(id, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param() id: FindUserByIdDto) {
     return this.userService.remove(id);
   }
 }

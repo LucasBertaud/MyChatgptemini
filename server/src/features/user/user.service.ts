@@ -5,6 +5,9 @@ import {
   USER_REPOSITORY,
   UserRepository,
 } from './repositories/user.repository';
+import { User } from './entities/user.entity';
+import { FindUserByEmailDto } from './dto/find-user-by-email.dto';
+import { FindUserByIdDto } from './dto/find-user-by-id.dto';
 
 @Injectable()
 export class UserService {
@@ -12,19 +15,23 @@ export class UserService {
     @Inject(USER_REPOSITORY) private readonly userRepository: UserRepository,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.userRepository.create(createUserDto);
+  async create(user: CreateUserDto): Promise<User> {
+    return this.userRepository.create(user);
   }
 
-  findOne(id: string) {
+  async findById(id: FindUserByIdDto): Promise<User | null> {
     return this.userRepository.findById(id);
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return this.userRepository.update(id, updateUserDto);
+  async findByEmail(email: FindUserByEmailDto): Promise<User | null> {
+    return this.userRepository.findByEmail(email);
   }
 
-  remove(id: string) {
+  async update(id: FindUserByIdDto, user: UpdateUserDto): Promise<User> {
+    return this.userRepository.update(id, user);
+  }
+
+  async remove(id: FindUserByIdDto): Promise<void> {
     return this.userRepository.delete(id);
   }
 }
