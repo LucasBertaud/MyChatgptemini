@@ -38,6 +38,6 @@ export class TypeOrmUserRepository implements UserRepository {
   }
 
   async delete(id: FindUserByIdDto): Promise<void> {
-    this.userRepository.delete(id);
+    await this.userRepository.delete(id);
   }
 }
