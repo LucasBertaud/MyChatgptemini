@@ -7,7 +7,8 @@ module.exports = {
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
-    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/stylistic-type-checked',
+    'plugin:@typescript-eslint/strict-type-checked',
     'plugin:prettier/recommended',
   ],
   root: true,
@@ -15,11 +16,29 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: [
+    '.eslintrc.js',
+    'dist',
+    'node_modules',
+    'src/main.ts',
+    'test/*',
+    'typeorm.config.ts',
+  ],
   rules: {
+    '@typescript-eslint/no-extraneous-class': 'off',
+    '@typescript-eslint/no-unnecessary-condition': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
   },
+  overrides: [
+    {
+      files: ['**/*.spec.ts'],
+      rules: {
+        '@typescript-eslint/unbound-method': 'off',
+      },
+    },
+  ],
 };
