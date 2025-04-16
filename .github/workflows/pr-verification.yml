@@ -1,0 +1,29 @@
+name: Pull Request Verification
+run-name: Pull Request Verification
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  verify-server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Installer les dépendances
+        uses: chill-viking/npm-ci@latest
+        with:
+          working_directory: ./server
+
+      - name: Vérifier le formatage du code
+        run: npm run format:check
+
+      - name: Vérifier la qualité du code
+        run: npm run lint:check
+
+      - name: Exécuter les tests
+        run: npm run test
