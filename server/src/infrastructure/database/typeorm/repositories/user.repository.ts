@@ -6,38 +6,38 @@ import { Repository } from 'typeorm';
 import { TypeOrmUserModel } from '../models/user.model';
 import { UserRepository } from 'src/features/user/repositories/user.repository';
 import { Injectable } from '@nestjs/common';
-import { FindUserByIdDto } from 'src/features/user/dto/find-user-by-id.dto';
 import { FindUserByEmailDto } from 'src/features/user/dto/find-user-by-email.dto';
+import { FindByUuidDto } from 'src/core/dto/find-by-uuid.dto';
 
 @Injectable()
 export class TypeOrmUserRepository implements UserRepository {
   constructor(
     @InjectRepository(TypeOrmUserModel)
-    private userRepository: Repository<TypeOrmUserModel>,
+    private repository: Repository<TypeOrmUserModel>,
   ) {}
 
-  async findById(id: FindUserByIdDto): Promise<User | null> {
-    return this.userRepository.findOneBy(id);
+  async findById(id: FindByUuidDto): Promise<User | null> {
+    return this.repository.findOneBy(id);
   }
 
   async findByEmail(email: FindUserByEmailDto): Promise<User | null> {
-    return this.userRepository.findOneBy(email);
+    return this.repository.findOneBy(email);
   }
 
   async create(user: CreateUserDto): Promise<User> {
-    const newUser = this.userRepository.create(user);
-    return this.userRepository.save(newUser);
+    const entity = this.repository.create(user);
+    return this.repository.save(entity);
   }
 
-  async update(id: FindUserByIdDto, user: UpdateUserDto): Promise<User> {
-    const updateUser = await this.userRepository.update(id, user);
-    if (updateUser.affected === 0) {
-      throw new Error('User not found');
+  async update(id: FindByUuidDto, user: UpdateUserDto): Promise<User> {
+    const entity = await this.repository.update(id, user);
+    if (entity.affected === 0) {
+      throw new Error('Entity not found');
     }
-    return this.userRepository.findOneBy(id);
+    return this.repository.findOneBy(id);
   }
 
-  async delete(id: FindUserByIdDto): Promise<void> {
-    await this.userRepository.delete(id);
+  async delete(id: FindByUuidDto): Promise<void> {
+    await this.repository.delete(id);
   }
 }

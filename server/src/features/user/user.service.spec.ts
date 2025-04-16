@@ -7,16 +7,11 @@ import {
 } from './repositories/user.repository';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FindUserByIdDto } from './dto/find-user-by-id.dto';
 import { FindUserByEmailDto } from './dto/find-user-by-email.dto';
+import { FindByUuidDto } from 'src/core/dto/find-by-uuid.dto';
 
 describe('UserService', () => {
   let service: UserService;
-  let createUserDto: CreateUserDto;
-  let updateUserDto: UpdateUserDto;
-  let findUserByIdDto: FindUserByIdDto;
-  let findUserByEmailDto: FindUserByEmailDto;
-
   const mockUserRepository: UserRepository = {
     create: jest.fn(),
     findById: jest.fn(),
@@ -38,21 +33,6 @@ describe('UserService', () => {
 
     service = module.get<UserService>(UserService);
 
-    createUserDto = {
-      email: '',
-      name: '',
-    };
-    updateUserDto = {
-      email: '',
-      name: '',
-    };
-    findUserByIdDto = {
-      id: '',
-    };
-    findUserByEmailDto = {
-      email: '',
-    };
-
     jest.clearAllMocks();
   });
 
@@ -66,7 +46,7 @@ describe('UserService', () => {
   });
 
   it('should create a user', async () => {
-    createUserDto = {
+    const createUserDto: CreateUserDto = {
       email: 'johndoe@gmail.com',
       name: 'JohnDoe',
     };
@@ -92,7 +72,7 @@ describe('UserService', () => {
       email: 'john@example.com',
       name: 'John',
     };
-    findUserByIdDto = {
+    const findUserByIdDto: FindByUuidDto = {
       id: user.id,
     };
 
@@ -105,7 +85,7 @@ describe('UserService', () => {
   });
 
   it('should return null if user is not found with id', async () => {
-    findUserByIdDto = {
+    const findUserByIdDto: FindByUuidDto = {
       id: 'not-exist-id',
     };
 
@@ -123,7 +103,7 @@ describe('UserService', () => {
       email: 'mock@email.org',
       name: 'MockName',
     };
-    findUserByEmailDto = {
+    const findUserByEmailDto: FindUserByEmailDto = {
       email: user.email,
     };
 
@@ -138,7 +118,7 @@ describe('UserService', () => {
   });
 
   it('should return null if user is not found with email', async () => {
-    findUserByEmailDto = {
+    const findUserByEmailDto: FindUserByEmailDto = {
       email: 'not-exist@gmail.com',
     };
 
@@ -159,12 +139,12 @@ describe('UserService', () => {
       name: 'OldName',
     };
 
-    updateUserDto = {
+    const updateUserDto: UpdateUserDto = {
       email: 'new@email.com',
       name: 'NewName',
     };
 
-    findUserByIdDto = {
+    const findUserByIdDto: FindByUuidDto = {
       id: existingUser.id,
     };
 
@@ -185,7 +165,7 @@ describe('UserService', () => {
   });
 
   it('should remove a user', async () => {
-    findUserByIdDto = {
+    const findUserByIdDto: FindByUuidDto = {
       id: 'delete-id-123',
     };
 
