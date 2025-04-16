@@ -10,8 +10,8 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FindUserByIdDto } from './dto/find-user-by-id.dto';
 import { FindUserByEmailDto } from './dto/find-user-by-email.dto';
+import { FindByUuidDto } from '../../core/dto/find-by-uuid.dto';
 
 @Controller('user')
 export class UserController {
@@ -23,7 +23,7 @@ export class UserController {
   }
 
   @Get(':id')
-  findById(@Param() id: FindUserByIdDto) {
+  findById(@Param() id: FindByUuidDto) {
     return this.userService.findById(id);
   }
 
@@ -33,12 +33,12 @@ export class UserController {
   }
 
   @Patch(':id')
-  update(@Param() id: FindUserByIdDto, @Body() user: UpdateUserDto) {
+  update(@Param() id: FindByUuidDto, @Body() user: UpdateUserDto) {
     return this.userService.update(id, user);
   }
 
   @Delete(':id')
-  async remove(@Param() id: FindUserByIdDto) {
+  async remove(@Param() id: FindByUuidDto) {
     await this.userService.remove(id);
     return { message: 'User deleted successfully' };
   }
