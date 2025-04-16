@@ -1,7 +1,15 @@
 import { Discussion } from 'src/features/discussion/entities/discussion.entity';
 import { User } from 'src/features/user/entities/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { TypeOrmUserModel } from './user.model';
+import { Message } from 'src/features/message/entities/message.entity';
+import { TypeOrmMessageModel } from './message.model';
 
 @Entity('discussions')
 export class TypeOrmDiscussionModel implements Discussion {
@@ -13,4 +21,6 @@ export class TypeOrmDiscussionModel implements Discussion {
   createdAt: Date;
   @ManyToOne(() => TypeOrmUserModel, (user) => user.discussions)
   initializedBy: User;
+  @OneToMany(() => TypeOrmMessageModel, (message) => message.discussion)
+  messages?: Message[];
 }

@@ -10,7 +10,7 @@ export default registerAs(
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [__dirname + '/models/*.model{.ts}'],
+    entities: [__dirname + '/models/*.model{.ts,.js}'],
     synchronize: process.env.APP_ENV === 'dev',
   }),
 );
