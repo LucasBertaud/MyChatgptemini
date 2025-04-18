@@ -23,6 +23,8 @@ module.exports = {
     'src/main.ts',
     'test/*',
     'typeorm.config.ts',
+    'typeorm-repository.providers.ts',
+    '**/*.spec.ts',
   ],
   rules: {
     '@typescript-eslint/no-extraneous-class': 'off',
@@ -33,12 +35,4 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
   },
-  overrides: [
-    {
-      files: ['**/*.spec.ts'],
-      rules: {
-        '@typescript-eslint/unbound-method': 'off',
-      },
-    },
-  ],
 };
