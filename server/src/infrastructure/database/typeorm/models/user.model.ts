@@ -1,5 +1,5 @@
-import { Discussion } from 'src/features/discussion/entities/discussion.entity';
-import { User } from 'src/features/user/entities/user.entity';
+import { Discussion } from 'src/domain/discussion/entities/discussion.entity';
+import { User } from 'src/domain/user/entities/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { TypeOrmDiscussionModel } from './discussion.model';
 

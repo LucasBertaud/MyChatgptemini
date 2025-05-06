@@ -1,12 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { DiscussionRepository } from 'src/features/discussion/repositories/discussion.repository';
+import { DiscussionRepository } from 'src/domain/discussion/repositories/discussion.repository';
 import { TypeOrmDiscussionModel } from '../models/discussion.model';
-import { Discussion } from 'src/features/discussion/entities/discussion.entity';
-import { CreateDiscussionDto } from 'src/features/discussion/dto/create-discussion.dto';
-import { UpdateDiscussionDto } from 'src/features/discussion/dto/update-discussion.dto';
-import { FindByUuidDto } from 'src/core/dto/find-by-uuid.dto';
+import { Discussion } from 'src/domain/discussion/entities/discussion.entity';
+import { CreateDiscussionDto } from 'src/domain/discussion/dto/create-discussion.dto';
+import { UpdateDiscussionDto } from 'src/domain/discussion/dto/update-discussion.dto';
+import { FindByUuidDto } from 'src/shared/dto/find-by-uuid.dto';
 
 @Injectable()
 export class TypeOrmDiscussionRepository implements DiscussionRepository {

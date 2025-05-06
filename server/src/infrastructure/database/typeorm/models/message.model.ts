@@ -1,5 +1,5 @@
-import { Discussion } from 'src/features/discussion/entities/discussion.entity';
-import { Message } from 'src/features/message/entities/message.entity';
+import { Discussion } from 'src/domain/discussion/entities/discussion.entity';
+import { Message } from 'src/domain/message/entities/message.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { TypeOrmDiscussionModel } from './discussion.model';
 

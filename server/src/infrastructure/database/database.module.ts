@@ -1,14 +1,21 @@
-import { Module } from '@nestjs/common';
-import { ConditionalModule } from '@nestjs/config';
+import { Module, DynamicModule } from '@nestjs/common';
 import { TypeOrmModule } from './typeorm/typeorm.module';
 
-@Module({
-  imports: [
-    ConditionalModule.registerWhen(
-      TypeOrmModule,
-      (env: NodeJS.ProcessEnv) => env.ORM_PROVIDER === 'typeorm',
-    ),
-  ],
-  exports: [],
-})
-export class DatabaseModule {}
+@Module({})
+export class DatabaseModule {
+  static register(env: NodeJS.ProcessEnv): DynamicModule {
+    const imports = [];
+    const exports = [];
+
+    if (env.ORM_PROVIDER === 'typeorm') {
+      imports.push(TypeOrmModule);
+      exports.push(TypeOrmModule);
+    }
+
+    return {
+      module: DatabaseModule,
+      imports,
+      exports,
+    };
+  }
+}

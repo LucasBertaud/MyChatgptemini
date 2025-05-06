@@ -1,5 +1,5 @@
-import { Discussion } from 'src/features/discussion/entities/discussion.entity';
-import { User } from 'src/features/user/entities/user.entity';
+import { Discussion } from 'src/domain/discussion/entities/discussion.entity';
+import { User } from 'src/domain/user/entities/user.entity';
 import {
   Entity,
   Column,
@@ -8,7 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { TypeOrmUserModel } from './user.model';
-import { Message } from 'src/features/message/entities/message.entity';
+import { Message } from 'src/domain/message/entities/message.entity';
 import { TypeOrmMessageModel } from './message.model';
 
 @Entity('discussions')

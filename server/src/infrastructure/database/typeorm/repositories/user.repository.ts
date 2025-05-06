@@ -1,13 +1,13 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from 'src/features/user/dto/create-user.dto';
-import { UpdateUserDto } from 'src/features/user/dto/update-user.dto';
-import { User } from 'src/features/user/entities/user.entity';
+import { CreateUserDto } from 'src/domain/user/dto/create-user.dto';
+import { UpdateUserDto } from 'src/domain/user/dto/update-user.dto';
+import { User } from 'src/domain/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { TypeOrmUserModel } from '../models/user.model';
-import { UserRepository } from 'src/features/user/repositories/user.repository';
+import { UserRepository } from 'src/domain/user/repositories/user.repository';
 import { Injectable } from '@nestjs/common';
-import { FindUserByEmailDto } from 'src/features/user/dto/find-user-by-email.dto';
-import { FindByUuidDto } from 'src/core/dto/find-by-uuid.dto';
+import { FindUserByEmailDto } from 'src/domain/user/dto/find-user-by-email.dto';
+import { FindByUuidDto } from 'src/shared/dto/find-by-uuid.dto';
 
 @Injectable()
 export class TypeOrmUserRepository implements UserRepository {
