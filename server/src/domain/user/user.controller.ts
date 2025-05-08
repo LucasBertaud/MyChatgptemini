@@ -11,9 +11,8 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FindUserByEmailDto } from './dto/find-user-by-email.dto';
-import { FindByUuidDto } from '../../shared/dto/find-by-uuid.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { FindByUserIdDto } from './dto/find-by-user-id.dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('user')
@@ -25,23 +24,23 @@ export class UserController {
     return this.userService.create(user);
   }
 
+  @Get('me')
+  getCurrentUser() {
+    return this.userService.getCurrentUser();
+  }
+
   @Get(':id')
-  findById(@Param() id: FindByUuidDto) {
+  findById(@Param() id: FindByUserIdDto) {
     return this.userService.findById(id);
   }
 
-  @Get('email/.:email')
-  findByEmail(@Param() email: FindUserByEmailDto) {
-    return this.userService.findByEmail(email);
-  }
-
   @Patch(':id')
-  update(@Param() id: FindByUuidDto, @Body() user: UpdateUserDto) {
+  update(@Param() id: FindByUserIdDto, @Body() user: UpdateUserDto) {
     return this.userService.update(id, user);
   }
 
   @Delete(':id')
-  async remove(@Param() id: FindByUuidDto) {
+  async remove(@Param() id: FindByUserIdDto) {
     await this.userService.remove(id);
     return { message: 'User deleted successfully' };
   }

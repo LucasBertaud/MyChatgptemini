@@ -1,4 +1,4 @@
-import { IsBoolean, IsString, IsUUID } from 'class-validator';
+import { IsBoolean, IsString, IsUUID, ValidateIf } from 'class-validator';
 
 export class CreateMessageDto {
   @IsString()
@@ -6,5 +6,6 @@ export class CreateMessageDto {
   @IsBoolean()
   ai: boolean;
   @IsUUID()
-  discussionId: string;
+  @ValidateIf((_, value) => value !== null)
+  discussionId: string | null;
 }

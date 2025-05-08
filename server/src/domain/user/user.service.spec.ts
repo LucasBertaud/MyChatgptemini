@@ -4,18 +4,21 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './repositories/user.repository';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FindUserByEmailDto } from './dto/find-user-by-email.dto';
-import { FindByUuidDto } from 'src/shared/dto/find-by-uuid.dto';
+import { FindByUuidDto } from '../../shared/dto/find-by-uuid.dto';
 import { INJECTION_TOKENS } from '../../shared/constants/injection-tokens.constants';
+import { REQUEST } from '@nestjs/core';
 
 describe('UserService', () => {
   let service: UserService;
   const mockUserRepository: UserRepository = {
     create: jest.fn(),
     findById: jest.fn(),
-    findByEmail: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
+  };
+
+  const mockRequest = {
+    user: { sub: 'mock-user-id' },
   };
 
   beforeEach(async () => {
@@ -26,11 +29,14 @@ describe('UserService', () => {
           provide: INJECTION_TOKENS.USER_REPOSITORY,
           useValue: mockUserRepository,
         },
+        {
+          provide: REQUEST,
+          useValue: mockRequest,
+        },
       ],
     }).compile();
 
     service = module.get<UserService>(UserService);
-
     jest.clearAllMocks();
   });
 
@@ -38,19 +44,16 @@ describe('UserService', () => {
     expect(service).toBeDefined();
     expect(service.create).toBeDefined();
     expect(service.findById).toBeDefined();
-    expect(service.findByEmail).toBeDefined();
     expect(service.update).toBeDefined();
     expect(service.remove).toBeDefined();
   });
 
   it('should create a user', async () => {
     const createUserDto: CreateUserDto = {
-      email: 'johndoe@gmail.com',
-      name: 'JohnDoe',
+      id: mockRequest.user.sub,
     };
 
     const createdUser: User = {
-      id: '2',
       ...createUserDto,
     };
 
@@ -58,17 +61,29 @@ describe('UserService', () => {
     const result = await service.create(createUserDto);
 
     expect(result).toBeDefined();
-    expect(result.email).toBe(createUserDto.email);
-    expect(result.name).toBe(createUserDto.name);
-    expect(result.id).toContain('2');
+    expect(result.id).toContain(createUserDto.id);
     expect(mockUserRepository.create).toHaveBeenCalledWith(createUserDto);
+  });
+
+  it('should get the current user', async () => {
+    const userId = mockRequest.user.sub;
+    const user: User = {
+      id: userId,
+    };
+
+    (mockUserRepository.findById as jest.Mock).mockResolvedValue(user);
+
+    const result = await service.getCurrentUser();
+
+    expect(mockUserRepository.findById).toHaveBeenCalledWith({
+      id: userId,
+    });
+    expect(result).toEqual(user);
   });
 
   it('should find a user by id', async () => {
     const user: User = {
       id: '123',
-      email: 'john@example.com',
-      name: 'John',
     };
     const findUserByIdDto: FindByUuidDto = {
       id: user.id,
@@ -95,51 +110,13 @@ describe('UserService', () => {
     expect(result).toBeNull();
   });
 
-  it('should find a user by email', async () => {
-    const user: User = {
-      id: '72',
-      email: 'mock@email.org',
-      name: 'MockName',
-    };
-    const findUserByEmailDto: FindUserByEmailDto = {
-      email: user.email,
-    };
-
-    (mockUserRepository.findByEmail as jest.Mock).mockResolvedValue(user);
-
-    const result = await service.findByEmail(findUserByEmailDto);
-
-    expect(mockUserRepository.findByEmail).toHaveBeenCalledWith(
-      findUserByEmailDto,
-    );
-    expect(result).toEqual(user);
-  });
-
-  it('should return null if user is not found with email', async () => {
-    const findUserByEmailDto: FindUserByEmailDto = {
-      email: 'not-exist@gmail.com',
-    };
-
-    (mockUserRepository.findByEmail as jest.Mock).mockResolvedValue(null);
-
-    const result = await service.findByEmail(findUserByEmailDto);
-
-    expect(mockUserRepository.findByEmail).toHaveBeenCalledWith(
-      findUserByEmailDto,
-    );
-    expect(result).toBeNull();
-  });
-
   it('should update a user', async () => {
     const existingUser: User = {
-      id: '99',
-      email: 'old@email.com',
-      name: 'OldName',
+      id: 'old-id-123',
     };
 
     const updateUserDto: UpdateUserDto = {
-      email: 'new@email.com',
-      name: 'NewName',
+      id: 'new-id-123',
     };
 
     const findUserByIdDto: FindByUuidDto = {

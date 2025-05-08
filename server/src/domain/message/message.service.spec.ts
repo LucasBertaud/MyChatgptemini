@@ -3,10 +3,14 @@ import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { MessageRepository } from './repositories/message.repository';
-import { FindByUuidDto } from 'src/shared/dto/find-by-uuid.dto';
+import { FindByUuidDto } from '../../shared/dto/find-by-uuid.dto';
 import { Message } from './entities/message.entity';
 import { Discussion } from '../discussion/entities/discussion.entity';
 import { INJECTION_TOKENS } from '../../shared/constants/injection-tokens.constants';
+import { DiscussionModule } from '../discussion/discussion.module';
+import { AiModule } from '../ai/ai.module';
+import { AiService } from '../ai/ai.service';
+import { DiscussionService } from '../discussion/discussion.service';
 
 describe('MessageService', () => {
   let service: MessageService;
@@ -19,6 +23,15 @@ describe('MessageService', () => {
     delete: jest.fn(),
   };
 
+  const mockAiService = {
+    generateResponse: jest.fn(),
+    generateTitle: jest.fn(),
+  };
+
+  const mockDiscussionService = {
+    create: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -26,6 +39,14 @@ describe('MessageService', () => {
         {
           provide: INJECTION_TOKENS.MESSAGE_REPOSITORY,
           useValue: mockMessageRepository,
+        },
+        {
+          provide: AiService,
+          useValue: mockAiService,
+        },
+        {
+          provide: DiscussionService,
+          useValue: mockDiscussionService,
         },
       ],
     }).compile();
@@ -42,7 +63,7 @@ describe('MessageService', () => {
     const dto: CreateMessageDto = {
       content: 'Bonjour le monde',
       discussionId: 'disc-123',
-      ai: false,
+      ai: true,
     };
 
     const discussion: Discussion = {
@@ -51,8 +72,6 @@ describe('MessageService', () => {
       createdAt: new Date(),
       initializedBy: {
         id: 'user-123',
-        name: 'Toto',
-        email: 'toto@mail.com',
       },
     };
 
@@ -70,8 +89,8 @@ describe('MessageService', () => {
 
     expect(mockMessageRepository.create).toHaveBeenCalledWith(dto);
     expect(result).toEqual(createdMessage);
-    expect(result.content).toBe(dto.content);
-    expect(result.ai).toBe(false);
+    expect(result.content).toBe('Bonjour le monde');
+    expect(result.ai).toBe(true);
     expect(result.discussion.id).toBe(discussion.id);
   });
 
@@ -89,8 +108,6 @@ describe('MessageService', () => {
         createdAt: new Date(),
         initializedBy: {
           id: 'user-99',
-          name: 'Bot',
-          email: 'bot@ai.com',
         },
       },
     };
@@ -119,8 +136,6 @@ describe('MessageService', () => {
           createdAt: new Date(),
           initializedBy: {
             id: 'user-321',
-            name: 'Lucie',
-            email: 'lucie@test.fr',
           },
         },
       },
@@ -151,8 +166,6 @@ describe('MessageService', () => {
         createdAt: new Date(),
         initializedBy: {
           id: 'user-1',
-          name: 'Jean',
-          email: 'jean@email.com',
         },
       },
     };

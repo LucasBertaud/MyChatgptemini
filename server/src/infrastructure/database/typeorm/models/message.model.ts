@@ -1,5 +1,5 @@
-import { Discussion } from 'src/domain/discussion/entities/discussion.entity';
-import { Message } from 'src/domain/message/entities/message.entity';
+import { Discussion } from '../../../../domain/discussion/entities/discussion.entity';
+import { Message } from '../../../../domain/message/entities/message.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { TypeOrmDiscussionModel } from './discussion.model';
 
@@ -13,6 +13,12 @@ export class TypeOrmMessageModel implements Message {
   content: string;
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
-  @ManyToOne(() => TypeOrmDiscussionModel, (discussion) => discussion.messages)
+  @ManyToOne(
+    () => TypeOrmDiscussionModel,
+    (discussion) => discussion.messages,
+    {
+      nullable: false,
+    },
+  )
   discussion: Discussion;
 }
