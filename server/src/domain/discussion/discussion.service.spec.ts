@@ -5,8 +5,10 @@ import { UpdateDiscussionDto } from './dto/update-discussion.dto';
 import { DiscussionRepository } from './repositories/discussion.repository';
 import { Discussion } from './entities/discussion.entity';
 import { User } from '../user/entities/user.entity';
-import { FindByUuidDto } from 'src/shared/dto/find-by-uuid.dto';
+import { FindByUuidDto } from '../../shared/dto/find-by-uuid.dto';
 import { INJECTION_TOKENS } from '../../shared/constants/injection-tokens.constants';
+import { UserModule } from '../user/user.module';
+import { UserService } from '../user/user.service';
 
 describe('DiscussionService', () => {
   let service: DiscussionService;
@@ -18,10 +20,18 @@ describe('DiscussionService', () => {
     delete: jest.fn(),
   };
 
+  const mockUserService = {
+    getCurrentUser: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         DiscussionService,
+        {
+          provide: UserService,
+          useValue: mockUserService,
+        },
         {
           provide: INJECTION_TOKENS.DISCUSSION_REPOSITORY,
           useValue: mockDiscussionRepository,
@@ -44,8 +54,6 @@ describe('DiscussionService', () => {
     };
 
     const user: User = {
-      email: 'johndoe@gmail.com',
-      name: 'JohnDoe',
       id: 'dadf-1234-5678-90ab-cdef12345678',
     };
 
@@ -64,7 +72,7 @@ describe('DiscussionService', () => {
     expect(result.title).toBe(createDiscussionDto.title);
     expect(result.id).toBe('1');
     expect(result.createdAt).toBeInstanceOf(Date);
-    expect(result.initializedBy.email).toBe(user.email);
+    expect(result.initializedBy.id).toBe(user.id);
   });
 
   it('should find a discussion by id', async () => {
@@ -74,9 +82,7 @@ describe('DiscussionService', () => {
       title: 'Some Discussion',
       createdAt: new Date(),
       initializedBy: {
-        email: 'someone@email.com',
         id: 'u1',
-        name: 'Someone',
       },
     };
 
@@ -97,8 +103,6 @@ describe('DiscussionService', () => {
         createdAt: new Date(),
         initializedBy: {
           id: userId.id,
-          email: 'a@a.com',
-          name: 'TestUser',
         },
       },
     ];
@@ -120,8 +124,6 @@ describe('DiscussionService', () => {
       createdAt: new Date(),
       initializedBy: {
         id: 'user-1',
-        name: 'Someone',
-        email: 's@e.com',
       },
     };
 

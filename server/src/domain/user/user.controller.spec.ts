@@ -7,7 +7,6 @@ import { INJECTION_TOKENS } from '../../shared/constants/injection-tokens.consta
 const mockUserRepository: UserRepository = {
   create: jest.fn(),
   findById: jest.fn(),
-  findByEmail: jest.fn(),
   update: jest.fn(),
   delete: jest.fn(),
 };

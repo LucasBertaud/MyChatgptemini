@@ -1,4 +1,4 @@
-import { FindByUuidDto } from 'src/shared/dto/find-by-uuid.dto';
+import { FindByUuidDto } from '../../../shared/dto/find-by-uuid.dto';
 import { Message } from '../entities/message.entity';
 import { CreateMessageDto } from '../dto/create-message.dto';
 import { UpdateMessageDto } from '../dto/update-message.dto';
