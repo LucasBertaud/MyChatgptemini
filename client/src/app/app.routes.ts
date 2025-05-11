@@ -4,18 +4,15 @@ import { AuthGuard } from '@auth0/auth0-angular';
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
     canActivate: [AuthGuard],
-    loadComponent: () =>
-      import('./features/home/home.component').then(
-        (load) => load.HomeComponent
-      ),
+    loadChildren: () =>
+      import('./core/layouts/layouts.routes').then((m) => m.LAYOUT_ROUTES),
   },
   {
     path: 'callback',
     loadComponent: () =>
       import('./features/callback/callback.component').then(
-        (load) => load.CallbackComponent
+        (m) => m.CallbackComponent
       ),
   },
 ];

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-callback',
@@ -12,9 +13,10 @@ import { environment } from '../../../environments/environment';
 export class CallbackComponent implements OnInit {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
-  isAuthenticated$ = this.auth.isAuthenticated$;
+  public isAuthenticated$: Observable<boolean> | undefined;
 
   ngOnInit() {
+    this.isAuthenticated$ = this.auth.isAuthenticated$;
     this.callApi();
     this.isAuthenticated$.subscribe((result) => {
       console.log(result);
