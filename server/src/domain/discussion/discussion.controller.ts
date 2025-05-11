@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { DiscussionService } from './discussion.service';
 import { CreateDiscussionDto } from './dto/create-discussion.dto';
@@ -24,9 +25,9 @@ export class DiscussionController {
     return this.discussionService.create(discussion);
   }
 
-  @Get('user/:id')
-  findByUser(@Param('id') userId: FindByUuidDto) {
-    return this.discussionService.findByUser(userId);
+  @Get('user')
+  findByUser(@Req() { user: { sub } }: { user: { sub: string } }) {
+    return this.discussionService.findByUser(sub);
   }
 
   @Get(':id')

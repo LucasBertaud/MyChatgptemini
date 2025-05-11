@@ -6,5 +6,6 @@ export interface Discussion {
   title: string;
   createdAt: Date;
   initializedBy: User;
+  updatedAt: Date;
   messages?: Message[];
 }

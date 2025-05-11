@@ -20,7 +20,7 @@ export class DiscussionService {
     return this.repository.create(discussion, user);
   }
 
-  findByUser(userId: FindByUuidDto): Promise<Discussion[]> {
+  findByUser(userId: string): Promise<Discussion[]> {
     return this.repository.findByUser(userId);
   }
 

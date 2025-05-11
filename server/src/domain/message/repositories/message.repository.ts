@@ -5,7 +5,7 @@ import { UpdateMessageDto } from '../dto/update-message.dto';
 
 export interface MessageRepository {
   findById(id: FindByUuidDto): Promise<Message | null>;
-  findByDiscussion(discussionId: FindByUuidDto): Promise<Message[]>;
+  findByDiscussion(discussionId: string): Promise<Message[]>;
   create(message: CreateMessageDto): Promise<Message>;
   update(id: FindByUuidDto, message: UpdateMessageDto): Promise<Message>;
   delete(id: FindByUuidDto): Promise<void>;

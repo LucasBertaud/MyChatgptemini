@@ -19,8 +19,12 @@ export class TypeOrmMessageRepository implements MessageRepository {
     return this.repository.findOneBy(id);
   }
 
-  async findByDiscussion(discussionId: FindByUuidDto): Promise<Message[]> {
-    return this.repository.findBy({ discussion: discussionId });
+  async findByDiscussion(discussionId: string): Promise<Message[]> {
+    return this.repository.findBy({
+      discussion: {
+        id: discussionId,
+      },
+    });
   }
 
   async create(message: CreateMessageDto): Promise<Message> {

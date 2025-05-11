@@ -25,8 +25,8 @@ export class MessageController {
   }
 
   @Get('discussion/:id')
-  findByDiscussion(@Param('id') discussionId: FindByUuidDto) {
-    return this.messageService.findByDiscussion(discussionId);
+  findByDiscussion(@Param('id') id: string) {
+    return this.messageService.findByDiscussion(id);
   }
 
   @Get(':id')

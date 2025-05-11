@@ -1,5 +1,5 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
@@ -8,12 +8,12 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([authHttpInterceptorFn])),
     provideAuth0({
       ...environment.auth0,
       httpInterceptor: {
-        allowedList: [`${environment.api.url}/user/323`],
+        allowedList: [`${environment.api.url}/*`],
       },
     }),
   ],

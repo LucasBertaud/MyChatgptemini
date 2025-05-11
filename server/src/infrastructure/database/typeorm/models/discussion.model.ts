@@ -25,4 +25,6 @@ export class TypeOrmDiscussionModel implements Discussion {
   initializedBy: User;
   @OneToMany(() => TypeOrmMessageModel, (message) => message.discussion)
   messages?: Message[];
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
 }

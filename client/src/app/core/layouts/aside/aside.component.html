@@ -1,0 +1,73 @@
+<aside
+  class="hidden w-64 flex-col border-r bg-background p-4 sm:flex h-screen sticky top-0 overflow-y-auto overflow-x-hidden"
+>
+  <div class="flex flex-col gap-4">
+    <a
+      routerLink="/"
+      class="inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 py-2 justify-start w-full gap-2 px-2 text-left"
+    >
+      <div
+        class="flex items-center justify-center rounded-full w-7 h-7 bg-primary text-secondary"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="w-4 h-4"
+        >
+          <path d="M12 8V4H8"></path>
+          <rect width="16" height="12" x="4" y="8" rx="2"></rect>
+          <path d="M2 14h2"></path>
+          <path d="M20 14h2"></path>
+          <path d="M15 13v2"></path>
+          <path d="M9 13v2"></path>
+        </svg>
+      </div>
+      <div class="overflow-hidden text-sm grow text-ellipsis whitespace-nowrap">
+        ChatGPTemini
+      </div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="w-4 h-4"
+      >
+        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+      </svg>
+    </a>
+
+    <div class="flex-1 overflow-auto">
+      @for (date of discussions() | groupByDate : UPDATED_AT ; track date.power)
+      {
+      <div class="grid gap-1 text-foreground mt-6 first:mt-0">
+        <p
+          class="px-2 text-xs font-medium text-tertiary first-letter:uppercase"
+        >
+          {{ date.name }}
+        </p>
+        @for (discussion of date.value ; track discussion.id ) {
+        <a
+          class="flex-1 block p-2 overflow-hidden text-sm truncate transition-colors rounded-md whitespace-nowrap hover:bg-accent"
+          routerLink="{{ discussion.id }}"
+          rel="ugc"
+        >
+          {{ discussion.title }}
+        </a>
+        }
+      </div>
+      }
+    </div>
+  </div>
+</aside>

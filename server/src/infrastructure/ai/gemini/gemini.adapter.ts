@@ -11,6 +11,9 @@ export class GeminiAdapter implements AiPort {
     const result = await this.ai.models.generateContent({
       model: 'gemini-2.0-flash',
       contents: prompt,
+      config: {
+        systemInstruction: AI_INSTRUCTIONS.GENERATE_RESPONSE,
+      },
     });
     const response = result.text.trim();
 

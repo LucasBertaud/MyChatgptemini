@@ -20,8 +20,8 @@ export class TypeOrmDiscussionRepository implements DiscussionRepository {
     return this.repository.findOneBy(id);
   }
 
-  async findByUser(userId: FindByUuidDto): Promise<Discussion[]> {
-    return this.repository.findBy({ initializedBy: userId });
+  async findByUser(userId: string): Promise<Discussion[]> {
+    return this.repository.findBy({ initializedBy: { id: userId } });
   }
 
   async create(

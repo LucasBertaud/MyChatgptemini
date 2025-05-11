@@ -28,7 +28,14 @@ export class MessageService {
       message.discussionId = newDiscussion.id;
     }
 
-    await this.repository.create(message);
+    this.repository.create(message).then(async (message) => {
+      await this.discussionService.update(
+        { id: message.discussion.id },
+        {
+          updatedAt: new Date(),
+        },
+      );
+    });
 
     const aiResponse = await this.aiService.generateResponse(message.content);
     const messageFromAi = await this.repository.create({
@@ -40,7 +47,7 @@ export class MessageService {
     return messageFromAi;
   }
 
-  findByDiscussion(discussionId: FindByUuidDto) {
+  findByDiscussion(discussionId: string) {
     return this.repository.findByDiscussion(discussionId);
   }
 
