@@ -1,5 +1,10 @@
 <div class="flex flex-1 flex-col h-screen">
-  <div class="flex-1 overflow-auto px-4 relative">
+  <div
+    class="flex-1 overflow-auto px-4 relative"
+    #window
+    [scrollTop]="window.scrollHeight"
+    *ngIf="messages.length > 0"
+  >
     @for (message of messages; track $index) {
     <app-message [message]="message" />
     }

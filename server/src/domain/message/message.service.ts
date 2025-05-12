@@ -44,7 +44,10 @@ export class MessageService {
       discussionId: message.discussionId,
     });
 
-    return messageFromAi;
+    return {
+      ai: messageFromAi,
+      user: message,
+    };
   }
 
   findByDiscussion(discussionId: string) {
