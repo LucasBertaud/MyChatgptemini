@@ -58,8 +58,16 @@ export class MessageService {
     return this.repository.findById(id);
   }
 
-  update(id: FindByUuidDto, message: UpdateMessageDto) {
-    return this.repository.update(id, message);
+  async update(id: string, message: UpdateMessageDto) {
+    // Update AI message based with user message
+    if (!message.ai && message.content) {
+      const aiResponse = await this.aiService.generateResponse(message.content);
+      return this.repository.update(id, {
+        content: aiResponse,
+      });
+    } else {
+      return this.repository.update(id, message);
+    }
   }
 
   remove(id: FindByUuidDto) {

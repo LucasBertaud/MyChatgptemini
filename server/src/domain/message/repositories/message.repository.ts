@@ -7,6 +7,6 @@ export interface MessageRepository {
   findById(id: FindByUuidDto): Promise<Message | null>;
   findByDiscussion(discussionId: string): Promise<Message[]>;
   create(message: CreateMessageDto): Promise<Message>;
-  update(id: FindByUuidDto, message: UpdateMessageDto): Promise<Message>;
+  update(id: string, message: UpdateMessageDto): Promise<Message>;
   delete(id: FindByUuidDto): Promise<void>;
 }

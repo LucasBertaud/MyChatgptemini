@@ -26,4 +26,8 @@ export class MessageService {
       }
     );
   }
+
+  public updateMessage(id: string, message: Message) {
+    return this.http.patch<Message>(API_URLS.MESSAGE.UPDATE(id), message);
+  }
 }

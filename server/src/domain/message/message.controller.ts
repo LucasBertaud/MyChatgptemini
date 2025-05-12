@@ -35,7 +35,7 @@ export class MessageController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: FindByUuidDto, @Body() message: UpdateMessageDto) {
+  update(@Param('id') id: string, @Body() message: UpdateMessageDto) {
     return this.messageService.update(id, message);
   }
 
