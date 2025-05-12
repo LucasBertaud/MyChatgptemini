@@ -1,21 +1,30 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { DiscussionService } from '../../../features/discussion/discussion.service';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { DateKeyEnum } from '../../../shared/enums/date-key.enum';
 import { GroupByDatePipe } from '../../../shared/pipes/group-by-date.pipe';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Discussion } from '../../../shared/models/discussion.model';
+import { globalDiscussions } from '../../../shared/signals';
 
 @Component({
   selector: 'app-aside',
   standalone: true,
-  imports: [GroupByDatePipe, RouterLink],
+  imports: [GroupByDatePipe, RouterLink, RouterLinkActive],
   templateUrl: './aside.component.html',
   providers: [DiscussionService],
 })
-export class AsideComponent {
+export class AsideComponent implements OnInit {
   public readonly UPDATED_AT = DateKeyEnum.UPDATED_AT;
   private readonly discussionService = inject(DiscussionService);
-  public discussions = toSignal(this.discussionService.getDiscussionsByUser(), {
-    initialValue: [],
-  });
+
+  public discussions: Discussion[] = [];
+  constructor() {
+    effect(() => {
+      this.discussions = globalDiscussions();
+    });
+  }
+
+  ngOnInit() {
+    this.discussionService.getDiscussionsByUser();
+  }
 }

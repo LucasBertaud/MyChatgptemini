@@ -17,14 +17,6 @@ export class CallbackComponent implements OnInit {
 
   ngOnInit() {
     this.isAuthenticated$ = this.auth.isAuthenticated$;
-    this.callApi();
-    this.isAuthenticated$.subscribe((result) => {
-      console.log(result);
-    });
-  }
-  callApi(): void {
-    this.http
-      .get(`${environment.api.url}/user/323`)
-      .subscribe((result) => console.log(result));
+    this.isAuthenticated$.subscribe((result) => {});
   }
 }

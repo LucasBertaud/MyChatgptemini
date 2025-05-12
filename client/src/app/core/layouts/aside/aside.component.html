@@ -49,16 +49,16 @@
     </a>
 
     <div class="flex-1 overflow-auto">
-      @for (date of discussions() | groupByDate : UPDATED_AT ; track date.power)
-      {
+      @for (date of discussions | groupByDate : UPDATED_AT ; track $index) {
       <div class="grid gap-1 text-foreground mt-6 first:mt-0">
         <p
           class="px-2 text-xs font-medium text-tertiary first-letter:uppercase"
         >
           {{ date.name }}
         </p>
-        @for (discussion of date.value ; track discussion.id ) {
+        @for (discussion of date.value ; track $index ) {
         <a
+          routerLinkActive="font-bold bg-accent"
           class="flex-1 block p-2 overflow-hidden text-sm truncate transition-colors rounded-md whitespace-nowrap hover:bg-accent"
           routerLink="{{ discussion.id }}"
           rel="ugc"

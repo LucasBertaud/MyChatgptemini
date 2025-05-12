@@ -1,3 +1,15 @@
+@import "prismjs/themes/prism-okaidia.css";
+@import "prismjs/plugins/line-numbers/prism-line-numbers.css";
+@import "prismjs/plugins/line-highlight/prism-line-highlight.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.max-w-prose p,
+.max-w-prose ol,
+.max-w-prose ul,
+.max-w-prose dl,
+.max-w-prose blockquote,
+.max-w-prose pre {
+  margin-bottom: 1rem;
+}

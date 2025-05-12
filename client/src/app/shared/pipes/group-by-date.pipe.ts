@@ -7,37 +7,29 @@ import { DateKeyEnum } from '../enums/date-key.enum';
   standalone: true,
 })
 export class GroupByDatePipe implements PipeTransform {
-  private groups: GroupByDateType[] = [];
-
   transform(items: any[], key: DateKeyEnum): GroupByDateType[] {
+    if (!items || items.length === 0) return [];
+
+    const groups: GroupByDateType[] = [];
+
     for (const item of items) {
       const itemDate = new Date(item[key]);
       const diffNameAndPower = this.getDateDiffNameAndPower(itemDate);
 
-      this.addKeyValue(diffNameAndPower, item);
+      const findGroup = groups.find((g) => g.name === diffNameAndPower.name);
+      if (!findGroup) {
+        groups.push({
+          power: diffNameAndPower.power,
+          name: diffNameAndPower.name,
+          value: [item],
+        });
+      } else {
+        findGroup.value.push(item);
+      }
     }
 
-    this.groups.sort((a, b) => {
-      return a.power - b.power;
-    });
-    console.log(this.groups);
-    return this.groups;
-  }
-
-  private addKeyValue(
-    diffNameAndPower: { name: string; power: number },
-    value: any
-  ) {
-    const findGroup = this.groups.find((g) => g.name === diffNameAndPower.name);
-    if (!findGroup) {
-      this.groups.push({
-        power: diffNameAndPower.power,
-        name: diffNameAndPower.name,
-        value: [value],
-      });
-    } else {
-      findGroup.value.push(value);
-    }
+    groups.sort((a, b) => a.power - b.power);
+    return groups;
   }
 
   private getDateDiffNameAndPower(date: Date): { name: string; power: number } {

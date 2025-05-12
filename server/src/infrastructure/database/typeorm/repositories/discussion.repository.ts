@@ -21,7 +21,10 @@ export class TypeOrmDiscussionRepository implements DiscussionRepository {
   }
 
   async findByUser(userId: string): Promise<Discussion[]> {
-    return this.repository.findBy({ initializedBy: { id: userId } });
+    return this.repository.find({
+      where: { initializedBy: { id: userId } },
+      order: { updatedAt: 'DESC' },
+    });
   }
 
   async create(
