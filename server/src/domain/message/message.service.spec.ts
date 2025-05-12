@@ -153,13 +153,16 @@ describe('MessageService', () => {
   });
 
   it('should update a message', async () => {
-    const id: FindByUuidDto = { id: 'msg-42' };
-    const updateDto: UpdateMessageDto = { content: 'Contenu mis à jour' };
+    const id: string = 'msg-42';
+    const updateDto: UpdateMessageDto = {
+      content: 'Contenu mis à jour',
+      ai: true,
+    };
 
     const updatedMessage: Message = {
-      id: id.id,
+      id: id,
       content: updateDto.content,
-      ai: false,
+      ai: true,
       createdAt: new Date(),
       discussion: {
         id: 'disc-1',
@@ -175,7 +178,6 @@ describe('MessageService', () => {
     mockMessageRepository.update.mockResolvedValue(updatedMessage);
 
     const result = await service.update(id, updateDto);
-
     expect(mockMessageRepository.update).toHaveBeenCalledWith(id, updateDto);
     expect(result.content).toBe(updateDto.content);
   });

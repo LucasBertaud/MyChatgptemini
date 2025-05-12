@@ -6,7 +6,10 @@
     *ngIf="messages.length > 0"
   >
     @for (message of messages; track $index) {
-    <app-message [message]="message" />
+    <app-message
+      [message]="message"
+      [precedentMessage]="messages[$index - 1]"
+    />
     }
     <div
       class="sticky bottom-0 left-0 w-full h-12 bg-gradient-to-t from-white to-transparent"

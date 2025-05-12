@@ -23,12 +23,18 @@
       <p class="whitespace-pre-wrap">
         {{ message.content }}
       </p>
+      } @else { @if (isLoading()) {
+      <div
+        class="px-3 py-1 text-xs font-medium leading-none text-center text-secondary bg-primary rounded-full animate-pulse"
+      >
+        loading...
+      </div>
       } @else {
       <markdown
         id="message-{{ message.id }}"
         [data]="message.content"
       ></markdown>
-      }
+      } }
     </div>
     <div class="flex items-center gap-2 py-2" *isAi="message.ai">
       <button
@@ -55,6 +61,7 @@
         <span class="sr-only">Copier</span>
       </button>
       <button
+        (click)="retry()"
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 w-4 h-4 hover:bg-transparent text-stone-400 hover:text-stone-900"
       >
         <svg

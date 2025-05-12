@@ -36,12 +36,14 @@ export class TypeOrmMessageRepository implements MessageRepository {
     return this.repository.save(entity);
   }
 
-  async update(id: FindByUuidDto, message: UpdateMessageDto): Promise<Message> {
-    const entity = await this.repository.update(id, message);
+  async update(id: string, message: UpdateMessageDto): Promise<Message> {
+    const entity = await this.repository.update(id, {
+      content: message.content,
+    });
     if (entity.affected === 0) {
       throw new Error('Entity not found');
     }
-    return this.repository.findOneBy(id);
+    return this.repository.findOneBy({ id });
   }
 
   async delete(id: FindByUuidDto): Promise<void> {
