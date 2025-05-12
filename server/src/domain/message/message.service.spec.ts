@@ -7,8 +7,6 @@ import { FindByUuidDto } from '../../shared/dto/find-by-uuid.dto';
 import { Message } from './entities/message.entity';
 import { Discussion } from '../discussion/entities/discussion.entity';
 import { INJECTION_TOKENS } from '../../shared/constants/injection-tokens.constants';
-import { DiscussionModule } from '../discussion/discussion.module';
-import { AiModule } from '../ai/ai.module';
 import { AiService } from '../ai/ai.service';
 import { DiscussionService } from '../discussion/discussion.service';
 
@@ -30,6 +28,7 @@ describe('MessageService', () => {
 
   const mockDiscussionService = {
     create: jest.fn(),
+    update: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -73,6 +72,7 @@ describe('MessageService', () => {
       initializedBy: {
         id: 'user-123',
       },
+      updatedAt: new Date(),
     };
 
     const createdMessage: Message = {
@@ -88,10 +88,9 @@ describe('MessageService', () => {
     const result = await service.create(dto);
 
     expect(mockMessageRepository.create).toHaveBeenCalledWith(dto);
-    expect(result).toEqual(createdMessage);
-    expect(result.content).toBe('Bonjour le monde');
-    expect(result.ai).toBe(true);
-    expect(result.discussion.id).toBe(discussion.id);
+    expect(result.ai.content).toBe('Bonjour le monde');
+    expect(result.ai.ai).toBe(true);
+    expect(result.ai.discussion.id).toBe(discussion.id);
   });
 
   it('should find a message by ID', async () => {
@@ -109,6 +108,7 @@ describe('MessageService', () => {
         initializedBy: {
           id: 'user-99',
         },
+        updatedAt: new Date(),
       },
     };
 
@@ -122,7 +122,7 @@ describe('MessageService', () => {
   });
 
   it('should find messages by discussion ID', async () => {
-    const discussionId: FindByUuidDto = { id: 'disc-999' };
+    const discussionId: string = 'disc-999';
 
     const messages: Message[] = [
       {
@@ -131,12 +131,13 @@ describe('MessageService', () => {
         ai: false,
         createdAt: new Date(),
         discussion: {
-          id: discussionId.id,
+          id: discussionId,
           title: 'Test Discussion',
           createdAt: new Date(),
           initializedBy: {
             id: 'user-321',
           },
+          updatedAt: new Date(),
         },
       },
     ];
@@ -167,6 +168,7 @@ describe('MessageService', () => {
         initializedBy: {
           id: 'user-1',
         },
+        updatedAt: new Date(),
       },
     };
 

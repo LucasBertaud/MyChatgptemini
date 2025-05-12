@@ -28,14 +28,14 @@ export class MessageService {
       message.discussionId = newDiscussion.id;
     }
 
-    this.repository.create(message).then(async (message) => {
-      await this.discussionService.update(
-        { id: message.discussion.id },
-        {
-          updatedAt: new Date(),
-        },
-      );
-    });
+    const messageCreated = await this.repository.create(message);
+
+    await this.discussionService.update(
+      { id: messageCreated.discussion.id },
+      {
+        updatedAt: new Date(),
+      },
+    );
 
     const aiResponse = await this.aiService.generateResponse(message.content);
     const messageFromAi = await this.repository.create({
