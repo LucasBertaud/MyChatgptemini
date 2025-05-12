@@ -7,7 +7,6 @@ import { Discussion } from './entities/discussion.entity';
 import { User } from '../user/entities/user.entity';
 import { FindByUuidDto } from '../../shared/dto/find-by-uuid.dto';
 import { INJECTION_TOKENS } from '../../shared/constants/injection-tokens.constants';
-import { UserModule } from '../user/user.module';
 import { UserService } from '../user/user.service';
 
 describe('DiscussionService', () => {
@@ -62,6 +61,7 @@ describe('DiscussionService', () => {
       createdAt: new Date(),
       initializedBy: user,
       ...createDiscussionDto,
+      updatedAt: new Date(),
     };
 
     mockDiscussionRepository.create.mockResolvedValue(createdDiscussion);
@@ -84,6 +84,7 @@ describe('DiscussionService', () => {
       initializedBy: {
         id: 'u1',
       },
+      updatedAt: new Date(),
     };
 
     mockDiscussionRepository.findById.mockResolvedValue(discussion);
@@ -95,15 +96,16 @@ describe('DiscussionService', () => {
   });
 
   it('should find discussions by user', async () => {
-    const userId: FindByUuidDto = { id: 'user-123' };
+    const userId: string = 'user-123';
     const discussions: Discussion[] = [
       {
         id: 'd1',
         title: 'Discussion 1',
         createdAt: new Date(),
         initializedBy: {
-          id: userId.id,
+          id: userId,
         },
+        updatedAt: new Date(),
       },
     ];
 
@@ -125,6 +127,7 @@ describe('DiscussionService', () => {
       initializedBy: {
         id: 'user-1',
       },
+      updatedAt: new Date(),
     };
 
     mockDiscussionRepository.update.mockResolvedValue(updatedDiscussion);
