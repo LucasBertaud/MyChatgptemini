@@ -2,8 +2,10 @@
   <div
     class="flex-1 overflow-auto px-4 relative"
     #window
-    [scrollTop]="window.scrollHeight"
-    *ngIf="messages.length > 0"
+    infiniteScroll
+    [infiniteScrollThrottle]="1500"
+    (scrolledUp)="loadMoreMessages()"
+    [scrollWindow]="false"
   >
     @for (message of messages; track $index) {
     <app-message

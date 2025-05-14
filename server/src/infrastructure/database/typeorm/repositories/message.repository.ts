@@ -7,6 +7,7 @@ import { Message } from '../../../../domain/message/entities/message.entity';
 import { MessageRepository } from '../../../../domain/message/repositories/message.repository';
 import { CreateMessageDto } from '../../../../domain/message/dto/create-message.dto';
 import { UpdateMessageDto } from '../../../../domain/message/dto/update-message.dto';
+import { Options } from 'src/shared/types/options.type';
 
 @Injectable()
 export class TypeOrmMessageRepository implements MessageRepository {
@@ -19,11 +20,21 @@ export class TypeOrmMessageRepository implements MessageRepository {
     return this.repository.findOneBy(id);
   }
 
-  async findByDiscussion(discussionId: string): Promise<Message[]> {
-    return this.repository.findBy({
-      discussion: {
-        id: discussionId,
+  async findByDiscussion(
+    discussionId: string,
+    options?: Options,
+  ): Promise<Message[]> {
+    return this.repository.find({
+      where: {
+        discussion: {
+          id: discussionId,
+        },
       },
+      order: {
+        createdAt: 'DESC',
+      },
+      skip: options?.offset,
+      take: options?.limit,
     });
   }
 

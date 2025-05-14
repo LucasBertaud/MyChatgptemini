@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { FindByUuidDto } from '../../shared/dto/find-by-uuid.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Options } from 'src/shared/types/options.type';
 
 @Controller('message')
 export class MessageController {
@@ -25,8 +27,16 @@ export class MessageController {
   }
 
   @Get('discussion/:id')
-  findByDiscussion(@Param('id') id: string) {
-    return this.messageService.findByDiscussion(id);
+  findByDiscussion(
+    @Param('id') id: string,
+    @Query('offset') offset: number,
+    @Query('limit') limit: number,
+  ) {
+    const options: Options = {
+      offset,
+      limit,
+    };
+    return this.messageService.findByDiscussion(id, options);
   }
 
   @Get(':id')

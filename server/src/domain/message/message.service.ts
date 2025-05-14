@@ -7,6 +7,7 @@ import { INJECTION_TOKENS } from '../../shared/constants/injection-tokens.consta
 import { AiService } from '../ai/ai.service';
 import { DiscussionService } from '../discussion/discussion.service';
 import { Discussion } from '../discussion/entities/discussion.entity';
+import { Options } from 'src/shared/types/options.type';
 
 @Injectable()
 export class MessageService {
@@ -50,8 +51,8 @@ export class MessageService {
     };
   }
 
-  findByDiscussion(discussionId: string) {
-    return this.repository.findByDiscussion(discussionId);
+  findByDiscussion(discussionId: string, options?: Options) {
+    return this.repository.findByDiscussion(discussionId, options);
   }
 
   findById(id: FindByUuidDto) {
