@@ -27,3 +27,34 @@ jobs:
 
       - name: Exécuter les tests
         run: npm run test
+
+  verify-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: chill-viking/npm-ci@latest
+
+      - name: Install dependencies for client
+        uses: chill-viking/npm-ci@latest
+        with:
+          working_directory: ./client
+
+      - name: Build and start services with Docker Compose
+        run: docker compose up -d --build
+
+      - name: Wait for client (port 4200) to be ready
+        run: |
+          npx wait-on http://localhost:4200
+
+      - name: Install Playwright browsers
+        run: cd client && npx playwright install --with-deps
+
+      - name: Run E2E tests
+        run: cd client && npm run test:e2e
+
+      - name: Stop Docker services
+        run: docker compose down

@@ -1,4 +1,7 @@
 {
   "name": "mychatgptemini",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "dependencies": {
+    "wait-on": "^8.0.3"
+  }
 }
