@@ -1,0 +1,39 @@
+services:
+  server:
+    build: ./server
+    container_name: server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: root
+      DB_NAME: mychatgptemini
+      AUTH0_ISSUER_URL: https://dev-68btpded5faw851r.us.auth0.com/
+      AUTH0_AUDIENCE: https://mychatgptemini/auth
+      GEMINI_API_KEY: "AIzaSyC1ICvRqIFm8RFeBejJ8Xs1ZicaHAmNHkw"
+      APP_ENV: dev
+
+  client:
+    build: ./client
+    container_name: client
+    ports:
+      - "4200:80"
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: mychatgptemini
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgres
+
+volumes:
+  postgres_data:
